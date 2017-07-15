@@ -1,0 +1,13 @@
+/*
+ * actor-protocol.h
+ *
+ *  Created on: Jul 15, 2017
+ *      Author: chaunm
+ */
+
+#ifndef SRC_HYDROPONIC_DEVICE_ACTOR_PROTOCOL_ACTOR_PROTOCOL_H_
+#define SRC_HYDROPONIC_DEVICE_ACTOR_PROTOCOL_ACTOR_PROTOCOL_H_
+
+
+
+#endif /* SRC_HYDROPONIC_DEVICE_ACTOR_PROTOCOL_ACTOR_PROTOCOL_H_ */
