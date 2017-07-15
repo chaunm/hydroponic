@@ -6,6 +6,7 @@
  */
 
 #include "serialcommunication.h"
+#include "serial-protocol.h"
 
 void SerialProtocolByteHandler(PVOID pSerial, BYTE byData, PWORD recvIndex, PBYTE recvPackage)
 {

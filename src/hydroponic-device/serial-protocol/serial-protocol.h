@@ -22,4 +22,7 @@ typedef struct stProtocolContent {
 	BYTE commandData[];
 } PROTOCOL_CONTENT, *PPROTOCOL_CONTENT;
 
+void SerialProtocolByteHandler(PVOID pSerial, BYTE byData, PWORD recvIndex, PBYTE recvPackage);
+void SerialProtocolPackageHandler(PBYTE pData, WORD nLength);
+
 #endif /* SRC_PROTOCOL_PROTOCOL_H_ */

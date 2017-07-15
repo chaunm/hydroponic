@@ -12,9 +12,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <getopt.h>
-#include "serialcommunication.h"
-#include "universal.h"
 #include "actor.h"
+#include "hydroponic-device/hydroponic-device.h"
 
 void PrintHelpMenu() {
 	printf("program: hydroponic-master\n"
@@ -29,13 +28,7 @@ void PrintHelpMenu() {
 
 int main(int argc, char* argv[])
 {
-
-	pthread_t SerialProcessThread;
-	pthread_t SerialOutputThread;
-	pthread_t SerialHandleThread;
 	//pthread_t DemoActorThread;
-	PSERIAL	pSerialPort;
-	BOOL bResult = FALSE;
 	/* get option */
 	int opt= 0;
 	char *token = NULL;
@@ -64,19 +57,19 @@ int main(int argc, char* argv[])
 			return EXIT_SUCCESS;
 			break;
 		case 's' :
-			SerialPort = StrDup(optarg);
+			SerialPort = StrDup((const char*)optarg);
 			break;
 		case 'i':
-			guid = StrDup(optarg);
+			guid = StrDup((const char*)optarg);
 			break;
 		case 't':
-			token = StrDup(optarg);
+			token = StrDup((const char*)optarg);
 			break;
 		case 'u':
 			ttl = atoi(optarg);
 			break;
 		case 'H':
-			mqttHost = StrDup(optarg);
+			mqttHost = StrDup((const char*)optarg);
 			break;
 		case 'p':
 			mqttPort = atoi(optarg);
@@ -106,32 +99,11 @@ int main(int argc, char* argv[])
 	/* Init device list */
 //	DeviceListInit();
 
-	/* Start MQTT actor */
-//	FLUENT_LOGGER_INFO("znp actor start");
-//	ZnpActorStart(&option);
-	printf("hydroponic actor start success\n");
-
-	/* open serial port and init queue for serial communication */
-	char* PortName = malloc(strlen("/dev/") + strlen(SerialPort) + 1);
-	memset(PortName, 0, strlen("/dev/") + strlen(SerialPort) + 1);
-	sprintf(PortName, "%s%s", "/dev/", SerialPort);
-	printf("open port %s\n", PortName);
-	pSerialPort = SerialOpen(PortName, B115200);
-	if (pSerialPort == NULL)
+	/* Start Device */
+	if (DeviceStart(&option, SerialPort) != 0)
 	{
-		printf("Can not open serial port %s, try another port\n", PortName);
+		printf ("hydroponic device start fail\n");
 		return EXIT_FAILURE;
 	}
-	free(PortName);
-	// Initial Serial port handle process
-	pthread_create(&SerialProcessThread, NULL, (void*)&SerialProcessIncomingData, (void*)pSerialPort);
-	pthread_create(&SerialOutputThread, NULL, (void*)&SerialOutputDataProcess, (void*)pSerialPort);
-	pthread_create(&SerialHandleThread, NULL, (void*)&SerialInputDataProcess, (void*)pSerialPort);
-
-	while (1)
-	{
-		sleep(1);
-	}
-	SerialClose(pSerialPort);
 	return EXIT_SUCCESS;
 }
