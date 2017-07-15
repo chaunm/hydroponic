@@ -12,15 +12,12 @@
 typedef struct stProtocolPackage {
 	BYTE start;
 	WORD length;
-	BYTE content[];
-} PROTOCOL_PACKAGE, *PPROTOCOL_PACKAGE;
-
-typedef struct stProtocolContent {
 	BYTE srcAddr;
 	BYTE destAddr;
 	BYTE command;
-	BYTE commandData[];
-} PROTOCOL_CONTENT, *PPROTOCOL_CONTENT;
+	BYTE data[];
+} PROTOCOL_PACKAGE, *PPROTOCOL_PACKAGE;
+
 
 void SerialProtocolByteHandler(PVOID pSerial, BYTE byData, PWORD recvIndex, PBYTE recvPackage);
 void SerialProtocolPackageHandler(PBYTE pData, WORD nLength);

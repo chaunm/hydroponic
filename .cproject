@@ -60,7 +60,6 @@
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="jansson"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="mosquitto"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="uuid"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="ssl"/>
 								</option>
 								<option id="gnu.c.link.option.paths.1326333030" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/hydroponic-master/src/lib/jansson}&quot;"/>

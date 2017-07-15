@@ -49,11 +49,28 @@ void SerialProtocolByteHandler(PVOID pSerial, BYTE byData, PWORD recvIndex, PBYT
 void SerialProtocolPackageHandler(PBYTE pData, WORD nLength)
 {
 	PPROTOCOL_PACKAGE protocolPackage;
-	PPROTOCOL_CONTENT protocolContent;
 	protocolPackage = (PPROTOCOL_PACKAGE)pData;
-	protocolContent = protocolPackage->content;
-	switch (protocolContent->command) {
+	switch (protocolPackage->command) {
 
 	}
 }
 
+void SerialProtocolSendCommand(PSERIAL pSerial, BYTE command, BYTE src, BYTE dest, PBYTE pData, WORD dataLength)
+{
+	PBYTE outputBuffer;
+	PPROTOCOL_PACKAGE outputPackage;
+	WORD i;
+	outputBuffer = malloc(sizeof(PPROTOCOL_PACKAGE) + dataLength + 1);
+	outputPackage = (PPROTOCOL_PACKAGE)outputBuffer;
+	outputPackage->start = 0xAA;
+	outputPackage->length = dataLength + 3;
+	outputPackage->srcAddr = src;
+	outputPackage->destAddr = dest;
+	for (i = 0; i < dataLength; i++)
+	{
+		outputPackage->data[i] = pData[i];
+	}
+	//stop byte
+	outputPackage->data[dataLength] = 0x55;
+	SerialOutput(pSerial, outputBuffer, dataLength + sizeof(PROTOCOL_PACKAGE) + 1);
+}

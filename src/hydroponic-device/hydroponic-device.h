@@ -9,6 +9,8 @@
 #define _HYDROPONIC_DEVICE_H_
 #include "serialcommunication.h"
 #include "actor.h"
+
+#pragma pack(1)
 typedef struct stHydroponicDevice {
 	PSERIAL serialPort;
 	PACTOR actor;

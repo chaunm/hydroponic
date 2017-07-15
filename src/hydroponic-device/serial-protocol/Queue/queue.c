@@ -53,7 +53,7 @@ void QueueFreeMem(PQUEUECONTROL pQueue)
 
 BYTE QueuePush(void* pSource, WORD nSize, PQUEUECONTROL pQueue)
 {
-	BYTE nIndex;
+	WORD nIndex;
 	PBYTE pDataContent;
 	if (pQueue == NULL) return 1;
 	if (pQueue->nFreePointer == pQueue->nCurrentPointer)

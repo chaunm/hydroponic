@@ -82,9 +82,9 @@ VOID SerialClose(PSERIAL pSerialPort)
  * 	- pBuffer: pointer to the data buffer.
  * 	- nSize: Size of data in buffer.
  */
-static VOID SerialHandleIncomingBuffer(PSERIAL pSerialPort, PBYTE pBuffer, BYTE nSize)
+static VOID SerialHandleIncomingBuffer(PSERIAL pSerialPort, PBYTE pBuffer, WORD nSize)
 {
-	BYTE nReceiveIndex;
+	WORD nReceiveIndex;
 	for (nReceiveIndex = 0; nReceiveIndex < nSize; nReceiveIndex++)
 	{
 		if (pSerialPort->SerialByteHandler != NULL)
@@ -101,16 +101,16 @@ static VOID SerialHandleIncomingBuffer(PSERIAL pSerialPort, PBYTE pBuffer, BYTE 
  */
 VOID SerialProcessIncomingData(PSERIAL pSerialPort)
 {
-	PBYTE pReceiveBuffer = (PBYTE)malloc(255);
-	BYTE byReceiveByte;
+	PBYTE pReceiveBuffer = (PBYTE)malloc(1024);
+	WORD wReceiveByte;
 	while(1)
 	{
-		byReceiveByte = read(pSerialPort->tty_fd, pReceiveBuffer, 255);
-		while (byReceiveByte > 0)
+		wReceiveByte = read(pSerialPort->tty_fd, pReceiveBuffer, 1024);
+		while (wReceiveByte > 0)
 		{
-			SerialHandleIncomingBuffer(pSerialPort, pReceiveBuffer, byReceiveByte);
+			SerialHandleIncomingBuffer(pSerialPort, pReceiveBuffer, wReceiveByte);
 			usleep(30);
-			byReceiveByte = read(pSerialPort->tty_fd, pReceiveBuffer, 255);
+			wReceiveByte = read(pSerialPort->tty_fd, pReceiveBuffer, 1024);
 		}
 		if (pReceiveBuffer != NULL)
 			free((void*)pReceiveBuffer);
@@ -127,7 +127,7 @@ VOID SerialProcessIncomingData(PSERIAL pSerialPort)
 void SerialOutputDataProcess(PSERIAL pSerialPort)
 {
 	QUEUECONTENT stOutputContent;
-	BYTE nIndex;
+	WORD nIndex;
 	while(1)
 	{
 		if (QueueGetState(pSerialPort->pOutputQueue) == QUEUE_ACTIVE)
@@ -157,7 +157,7 @@ void SerialOutputDataProcess(PSERIAL pSerialPort)
 void SerialInputDataProcess(PSERIAL pSerialPort)
 {
 	QUEUECONTENT stInputContent;
-	BYTE nIndex;
+	WORD nIndex;
 	while(1)
 	{
 		if (QueueGetState(pSerialPort->pInputQueue) == QUEUE_ACTIVE)
@@ -190,7 +190,7 @@ void SerialInputDataProcess(PSERIAL pSerialPort)
  * 	- pData: Pointer to data buffer.
  * 	- nSize: Size of data.
  */
-BYTE SerialOutput(PSERIAL pSerialPort, PBYTE pData, BYTE nSize)
+BYTE SerialOutput(PSERIAL pSerialPort, PBYTE pData, WORD nSize)
 {
 	return QueuePush(pData, nSize, pSerialPort->pOutputQueue);
 }
