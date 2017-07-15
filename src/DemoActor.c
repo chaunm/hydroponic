@@ -13,7 +13,7 @@
 #include <pthread.h>
 #include <getopt.h>
 #include "actor.h"
-#include "hydroponic-device/hydroponic-device.h"
+#include "hydroponic-device.h"
 
 void PrintHelpMenu() {
 	printf("program: hydroponic-master\n"
